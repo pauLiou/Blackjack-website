@@ -1,26 +1,35 @@
 {% extends "base.html" %}{% block title %}Home{% endblock %} {% block content %}
-{% for card in user.blackjack %}
-<ul class="list-group list-group-flush">
-    <li class="list-group=item">
-<button type="button" class="close" onClick="deleteImage({{ card.id }})">
-        <span aria-hidden="true">&times;</span>
-</button>
- <h3 align="center">{{card.card}} {{card.suit}}</card></h3>
-</il>
-</ul>
+<head>
+</head>
+<body>
+  <style>
+    .containerdiv { float: left; position: relative; } 
+    .cardimage { position: relative; top: center; right: center; } 
+    </style>
+<div class="containerdiv" style="position:relative; left:50px">
+  <img src="{{url_for('static',filename='board2.png')}}"/>
+</div>
+{% for card in user.cards %}
+<div class="cardimage">
+  <img src="{{ card.card_url }}" style='width:40px;height:auto'/>
+  <button type="button" class="close" onClick="deleteImage({{ card.id }})">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
 {% endfor %}
-<html lang="en">
-  <head>
-  </head>
-  <body>
-    <h3 align="center">Would you like a card?</h3>
-        <form method="post" action="/" align="center">
-            <input type="submit" value="HIT" name="action1"/>
-        </form>
+
+<h3 align="center">Would you like a card?</h3>
+<form method="post" action="/" align="center">
+    <input type="submit" value="HIT" name="action1"/>
+</form>
 
 
-    <script src="index.js"></script>
-  </body>
+<script src="index.js"></script>
+    
+</body>
 </html>
 
 {% endblock %}
+
+

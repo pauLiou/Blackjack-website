@@ -2,7 +2,7 @@ import numpy as np
 
 class Deck_of_cards:
     def __init__(self,total_decks = 4):
-        self.suit = ['clubs','diamonds','hearts','spades']
+        self.suit = ['Clubs','Diamonds','Hearts','Spades']
         self.card = ['A','2','3','4','5','6','7','8','9','10','J','Q','K']
         self.total_decks = total_decks
         self.deck = list((x,y) for x in self.suit for y in self.card) * self.total_decks

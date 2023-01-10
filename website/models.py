@@ -12,12 +12,18 @@ class User(db.Model, UserMixin):
     cash = db.Column(db.Integer,default=2000)
     stats = db.Column(db.Integer)
     blackjack = db.relationship('Blackjack')
+    cards = db.relationship('Cards')
     
 
 class Blackjack(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    card = db.Column(db.String(150))
-    suit = db.Column(db.Integer)
+    suit = db.Column(db.String(150))
+    card = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+class Cards(db.Model):
+    id = db.Column(db.Integer,primary_key=True)
+    card_url = db.Column(db.String(150))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 
