@@ -1,19 +1,19 @@
 {% extends "base.html" %}{% block title %}Home{% endblock %} {% block content %}
 
-
 <head>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/main.css') }}"
+  />
 </head>
 
 <body>
-  <img src="{{url_for('static',filename='board2.png')}}" />
-  <div class="container">
-    <div class="container">
-      
-    </div>
+      <img src="{{url_for('static',filename='board2.png')}}" />
+
+
     {% for card in user.cards %}
     <div class="cardimage">
-      <img src="{{ card.card_url }}" style='width:40px;height:auto' />
+      <img src="{{ card.card_url }}" style="width: 40px; height: auto" />
       <button type="button" class="close" onClick="deleteImage({{ card.id }})">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -25,6 +25,5 @@
         </form>
         {% endblock %}
       </div>
-    </div>
-  </div>
+
 </body>

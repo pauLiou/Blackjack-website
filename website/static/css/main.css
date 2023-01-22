@@ -14,10 +14,11 @@
 }
 
 .containerdiv {
-  float: center;
-  position: relative;
-  padding-top:0;
-  margin-top:0;
+    position:relative
+    margin: w x y z;
+    width:960px;
+
+   }
 }
 
 .cardimage {
