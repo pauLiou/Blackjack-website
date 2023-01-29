@@ -22,12 +22,14 @@ class Deck_of_cards:
         np.random.shuffle(self.deck)
 
 class Dealer:
-    def __init__(self,value,move):
-        self.value
-        self.move
+    def __init__(self,value=0,cards=[]):
+        self.value = value
+        self.cards = cards
+
 
 class Player:
-    def __init(self,value,move):
-        self.value
-        self.move
+    def __init__(self,value=0,cards=[]):
+        self.value = value
+        self.cards = cards
+
 

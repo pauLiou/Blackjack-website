@@ -1,47 +1,62 @@
 import deck_and_players
+import time
 
-def hand_value(hand):
+def hand_value(player):
     #get the value of the cards in the players hand
-    value = []
-
+    player.value = 0
+    _,hand = zip(*player.cards)
     for card in hand:
-        if card not in ['J','Q','K','A']:
-            value.append(int(card))
-        else:
-            value.append(10)
-    
-    return sum(value)
+        if card.isnumeric():
+            player.value += (int(card))
+        if card in ['J','Q','K']:
+            player.value += 10
+            
+        elif card is ['A']:
+            if sum(player.value) + 11 > 21:
+                player.value += 1
+            else:
+                player.value += 11
+    return (player)
 
-def deal_cards(players):
-    # deal the first 2 cards to the number of players
-    first_card = []
-    second_card = []
-    for _ in range(players):
-        deal_card = deck_and_players.Deck_of_cards()
-        first_card.append(deal_card.deal_card())
-        second_card.append(deal_card.deal_card())
-    return first_card,second_card
+def house_logic(deal,house):
+    if house.value <= 16:
+        house.cards.append(deal.deal_card())
+        print('Dealer new card is: ', house.cards[-1])
+        house = hand_value(house)
+        time.sleep(0.5)
+        return house_logic(deal,house) # recursive loop
+    else:
+        print('The dealer sticks on', house.value)
+        return house
+
+def win_lose(player,house):
+    if player.value > house.value:
+        print('You win!')
+        return 'Win'
+    elif player.value < house.value:
+        print('The house wins!')
+        return 'Lose'
+    else:
+        print('Push! No winner!')
+        return 'Push'
 
 
-def dealt_score(players):
+
+def play_blackjack(deal,player,house):
     # deal the cards and find out the value of each players cards
-    first_card,second_card = deal_cards(players)
-    hand = first_card + second_card
-    score = []
-    for i in range(players):
-        score.append(hand_value(hand[i][1] + hand[i+players][1]))
-    return score,hand
+    player.cards = [deal.deal_card() for _ in range(0,2)]
+    house.cards = [deal.deal_card() for _ in range(0,2)]
+    player = hand_value(player)
+    house = hand_value(house)
 
-def dealer_cards():
-    # deal the cards for the dealer
-    first_card,second_card = deal_cards(1)
-    hand = first_card + second_card
-    score = hand_value(hand[0][1] + hand[1][1])
+    print('You were dealt:', player.cards)
+    print('You have', player.value)
+    print('The dealer is showing', house.cards)
+    print('The dealer has', house.value)
 
-    print('The Dealer has:', score)
-    return score
+    action(deal,player,house)
 
-
+    return player
 
 def check_conditions(score):
     # see if the player has a blackjack (1.5 payout)
@@ -51,24 +66,19 @@ def check_conditions(score):
     # see if the player has busted (0 payout)
     elif score > 21:
         return 'Bust'
-
     else:
-        print('You have', score)
         return 'Value'
 
-def action(cards):
+def action(deal,player,house):
 
-    score = 0
+    player = hand_value(player)
+    outcome = check_conditions(player.value)
 
-    for i in range(len(cards)):
-        score += hand_value(cards[i][1])
-
-    count = check_conditions(score)
-
-    if count == 'Bust':
+    if outcome == 'Bust':
+        print(player.value)
         print('Busted! You have lost!')
     
-    elif count == 'Blackjack':
+    elif outcome == 'Blackjack':
         print('21! Blackjack! You win!')
         exit()
     else:
@@ -77,31 +87,37 @@ def action(cards):
 
         if decision == 'Y':
 
-            deal_card = deck_and_players.Deck_of_cards()
-            cards.append(deal_card.deal_card())
-            print('New Card is: ', cards[-1])
+            player.cards.append(deal.deal_card())
+            print('New card is: ', player.cards[-1])
 
             # new card value
-            for i in range(len(cards)):
-                score += hand_value(cards[i][1])
-                action(cards)
+            player.value = hand_value(player)
+            action(deal,player,house)
         
         elif decision == 'N':
-            for i in range(len(cards)):
-                score += hand_value(cards[i][1])
-            return score
+            house_logic(deal,house)
+            outcome = win_lose(player,house)
+
+            play_again = input('Would you like to play again?')
+
+            if play_again == 'Y':
+                play_blackjack(deal,player,house)
+            else:
+                exit()
+
         
         else:
             print('Please enter a valid answer')
-            action(cards)
+            action(deal,player,house)
     
-        
+# initialise the classes 
 
+deal = deck_and_players.Deck_of_cards()
+player = deck_and_players.Player()
+house = deck_and_players.Dealer()
 
-players = 1
-score,hand = dealt_score(players)
-dealer_cards()
-action(hand)
+play_blackjack(deal,player,house)
+
 
 
 
