@@ -5,7 +5,7 @@ from flask_wtf import FlaskForm
 from wtforms import FileField, SubmitField
 from werkzeug.utils import secure_filename
 from .models import User,Blackjack,Cards
-from engine import deck_and_players
+from engine import deck_and_players,deposits,game_logic
 from . import db
 import json
 import os
@@ -17,15 +17,26 @@ views = Blueprint('views', __name__)
 #defining our views
 @views.route('/', methods=['GET','POST']) # decorator - the url endpoint route for this page
 @login_required
-def home():
+def home(play=False):
     if request.method == "POST":
-        if request.form.get('action1') == 'HIT':
+        
+        if request.form.get('action_play') == 'PLAY':
+            play = True
+            deal = deck_and_players.Deck_of_cards()
+            player = deck_and_players.Player()
+            house = deck_and_players.Dealer()
+            print('hello?')
+        if request.form.get('action_hit') == 'HIT' and play is True:
+
+            print('hello')
+            
+            game_logic.play_blackjack(deal,player,house)
             deal_card = deck_and_players.Deck_of_cards()
             card = deal_card.deal_card()
             card = Blackjack(card=card[1],suit=card[0],user_id=current_user.id)
             url_prefix = card.suit.lower()[:-1]
             card = Cards(card_url = './static/' + url_prefix + '/card' + card.suit + '_' + card.card + '.png',user_id=current_user.id)
-            print(card.card_url)
+
             db.session.add(card)
             db.session.commit()
         else:

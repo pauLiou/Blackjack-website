@@ -1,11 +1,18 @@
-import deck_and_players
-import deposits
+from website import views
+from engine import deck_and_players,deposits
+from flask import Blueprint
 import time
+
+game = Blueprint('game', __name__)
 
 def hand_value(current):
     #get the value of the cards in the players hand and update the player class
     current.value = 0
     _,hand = zip(*current.cards)# splits up the tuples so we just get the values of each hand
+    
+    if 'A' in hand:
+        hand = list(hand)
+        [x for x in hand if hand.append(hand.pop(hand.index('A')))] # push all the aces to the end
 
     for card in hand:
         if card.isnumeric():
@@ -38,6 +45,7 @@ def house_logic(deal,house):
         print(f'The dealer has {house.value}')
         return house
 
+@game.route('/', methods=["GET","POST"])
 def play_blackjack(deal,player,house):
     # deal the cards and find out the value of each players cards
     player.cards = [deal.deal_card() for _ in range(0,2)]
@@ -56,7 +64,7 @@ def play_blackjack(deal,player,house):
     
     return player
 
-def double_bet(player,bet):
+def double_bet(deal,player,bet):
     # if doubling bet we minus the bet again, then double the worth of the bet
     print('Double, 1 card only')
     player.bank -= int(bet)
@@ -94,16 +102,17 @@ def action(deal,player,house,bet,double=0):
             print(house.value)
             house = house_logic(deal,house)
             deposits.winner_calculation(player,house,bet,outcome)
-            
+            play_again = input('Would you like to play again? (Y/N) ')
 
             if play_again == 'Y':
                 play_blackjack(deal,player,house)
             else:
                 exit()
+
         elif decision == 'Double':
             double = 1
             house = house_logic(deal,house)
-            player,bet = double_bet(player,bet)
+            player,bet = double_bet(deal,player,bet)
             print(f'1 card only: {player.cards[-1]}')
             deposits.winner_calculation(player,house,bet,outcome)
             play_again = input('Would you like to play again? (Y/N) ')
@@ -126,12 +135,6 @@ def action(deal,player,house,bet,double=0):
 
 # initialise the classes 
 
-deal = deck_and_players.Deck_of_cards()
-player = deck_and_players.Player()
-house = deck_and_players.Dealer()
-bank = deposits.Bank(player.bank)
-
-play_blackjack(deal,player,house)
 
 
 

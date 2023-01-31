@@ -19,9 +19,14 @@
       </button>
       {% endfor %}
       <div class="container">
-        <h2 align="center">Would you like a card?</h2>
         <form method="post" action="/" align="center">
-          <input type="submit" value="HIT" name="action1" />
+          <input type="submit" value="PLAY" name="action_play"/>
+
+          <h3 align="center">Would you like a card?</h3>
+
+          <input type="submit" value="HIT" name="action_hit" />
+          <input type="submit" value="STICK" name="action_stick" />
+          <input type="submit" value="DOUBLE" name="action_double" />
         </form>
         {% endblock %}
       </div>

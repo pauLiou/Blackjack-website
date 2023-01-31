@@ -9,11 +9,10 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(150), unique=True)
     password = db.Column(db.String(150))
     username = db.Column(db.String(150))
-    cash = db.Column(db.Integer,default=2000)
+    cash = db.Column(db.Integer,default=10000)
     stats = db.Column(db.Integer)
     blackjack = db.relationship('Blackjack')
     cards = db.relationship('Cards')
-    
 
 class Blackjack(db.Model):
     id = db.Column(db.Integer, primary_key=True)
