@@ -45,7 +45,6 @@ def house_logic(deal,house):
         print(f'The dealer has {house.value}')
         return house
 
-@game.route('/', methods=["GET","POST"])
 def play_blackjack(deal,player,house):
     # deal the cards and find out the value of each players cards
     player.cards = [deal.deal_card() for _ in range(0,2)]
@@ -53,16 +52,15 @@ def play_blackjack(deal,player,house):
     player = hand_value(player)
     house = hand_value(house)
 
-    player,bet = deposits.make_bet(player)
+    #player,bet = deposits.make_bet(player)
 
-    print('You were dealt:', player.cards)
+    #print('You were dealt:', player.cards)
 
-    print('The dealer is showing', house.cards[0])
+    #print('The dealer is showing', house.cards[0])
 
-    action(deal,player,house,bet)
+    #action(deal,player,house,bet)
 
-    
-    return player
+    return player,house
 
 def double_bet(deal,player,bet):
     # if doubling bet we minus the bet again, then double the worth of the bet
@@ -76,7 +74,6 @@ def double_bet(deal,player,bet):
     
     return player,bet
 
-
 def action(deal,player,house,bet,double=0):
 
     player = hand_value(player)
@@ -87,7 +84,7 @@ def action(deal,player,house,bet,double=0):
         if double == 0:
             decision = input('Would you like to do? [Hit],[Stick],[Double]? ')
         else:
-            decision = input('What would you like to do? [Hit],[Stick]')
+            decision = input('What would you like to do? [Hit],[Stick]? ')
 
         if decision == 'Hit':
             double = 1

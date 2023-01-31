@@ -2,7 +2,7 @@
 from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
-
+import numpy as np
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -24,6 +24,7 @@ class Cards(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     card_url = db.Column(db.String(150))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
 
 
 

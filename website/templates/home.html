@@ -1,5 +1,3 @@
-{% extends "base.html" %}{% block title %}Home{% endblock %} {% block content %}
-
 <head>
   <link
     rel="stylesheet"
@@ -8,27 +6,12 @@
 </head>
 
 <body>
-      <img src="{{url_for('static',filename='board2.png')}}" />
-
-
-    {% for card in user.cards %}
-    <div class="cardimage">
-      <img src="{{ card.card_url }}" style="width: 40px; height: auto" />
-      <button type="button" class="close" onClick="deleteImage({{ card.id }})">
-        <span aria-hidden="true">&times;</span>
-      </button>
-      {% endfor %}
-      <div class="container">
-        <form method="post" action="/" align="center">
-          <input type="submit" value="PLAY" name="action_play"/>
-
-          <h3 align="center">Would you like a card?</h3>
-
-          <input type="submit" value="HIT" name="action_hit" />
-          <input type="submit" value="STICK" name="action_stick" />
-          <input type="submit" value="DOUBLE" name="action_double" />
-        </form>
-        {% endblock %}
-      </div>
-
+  <div align="center">
+    <img src="{{url_for('static',filename='board2.png')}}" />
+  </div>
+  <div class="container">
+    <form method="post" action="/" align="center">
+      <input type="submit" value="PLAY" name="action_play" href="/game" />
+    </form>
+  </div>
 </body>

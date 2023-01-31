@@ -3,6 +3,6 @@ function deleteImage(card) {
         method: 'POST',
         body: JSON.stringify({ card: card}),
     }).then(() => {
-        window.location.href = "/";
+        window.location.href = "/game";
     })
 }

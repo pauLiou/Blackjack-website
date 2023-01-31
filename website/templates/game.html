@@ -1,0 +1,35 @@
+<head>
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/cards.css') }}"
+  />
+  <script
+    type="text/javascript"
+    src="{{ url_for('static', filename='index.js') }}"
+  ></script>
+</head>
+
+<body>
+  <div align="center">
+    <img src="{{url_for('static',filename='board2.png')}}" />
+  </div>
+
+  <div class="cardimage">
+    {% for card in user.cards %}
+    <img src="{{ card.card_url }}" />
+    <button type="button" onClick="deleteImage({{ card.id }})">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    {% endfor %}
+  </div>
+
+  <div class="container">
+    <form method="post" align="center" action="/game">
+      <h3 align="center">Would you like a card?</h3>
+      <br />
+      <input type="submit" value="HIT" name="action_hit" />
+      <input type="submit" value="STICK" name="action_stick" />
+      <input type="submit" value="DOUBLE" name="action_double" />
+    </form>
+  </div>
+</body>
