@@ -1,8 +1,6 @@
 #database models, one for users and one for info
 from . import db
 from flask_login import UserMixin
-from sqlalchemy.sql import func
-import numpy as np
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -13,6 +11,7 @@ class User(db.Model, UserMixin):
     stats = db.Column(db.Integer)
     blackjack = db.relationship('Blackjack')
     cards = db.relationship('Cards')
+    gamestate = db.relationship('GameState')
 
 class Blackjack(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -23,6 +22,12 @@ class Blackjack(db.Model):
 class Cards(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     card_url = db.Column(db.String(150))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+class GameState(db.Model):
+    id = db.Column(db.Integer,primary_key=True)
+    current_value = db.Column(db.Integer)
+    current_stage = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 

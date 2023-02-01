@@ -1,0 +1,31 @@
+<head>
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/cards.css') }}"
+  />
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}"
+  />
+</head>
+
+<body>
+  <div align="center">
+    <form method="POST" action="/">
+      <h3>Make bet:</h3>
+
+      <input
+        class="slider"
+        type="range"
+        min="0"
+        max="{{user.cash}}"
+        value="{{user.cash // 2}}"
+        oninput="rangeValue.innerText = this.value"
+        name="bet"
+      />
+      <p id="rangeValue">1000</p>
+
+      <input class="button-1" type="submit" value="BET" name="action_play" />
+    </form>
+  </div>
+</body>

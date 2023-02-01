@@ -1,0 +1,54 @@
+<head>
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}"
+  />
+  <link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/cards.css') }}"
+/>
+  <script
+    type="text/javascript"
+    src="{{ url_for('static', filename='index.js') }}"
+  ></script>
+</head>
+
+<body>
+  <div class="cardimage">
+    {% for card in user.cards %}
+    <img src="{{ card.card_url }}" />
+
+    <button type="button" onClick="deleteImage({{ card.id }})">
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+    {% endfor %}
+
+  </div>
+  <div class="valueFont">
+    <form  align="left">
+    <p><h3>Player Card Score: {{ player_value.current_value }}</h3></p>
+    <p><h3>Dealer Card Score: {{ house_value.current_value }}</h3></p>
+  </form>
+  </div>
+    
+
+
+  <div>
+    <form method="post" align="center" action="/game">
+      <h1 align="center">Would you like a card?</h1>
+      <br />
+      <input class="button-hit" type="submit" value="HIT" name="action_hit" />
+      <input class="button-stick" type="submit" value="STICK" name="action_stick" />
+      <input
+        class="button-double"
+        type="submit"
+        value="DOUBLE"
+        name="action_double"
+      />
+    </form>
+  </div>
+
+
+
+</body>
