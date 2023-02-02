@@ -27,7 +27,9 @@ class Cards(db.Model):
 class GameState(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     current_value = db.Column(db.Integer)
+    current_house_value = db.Column(db.Integer)
     current_stage = db.Column(db.Integer)
+    current_bet = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 

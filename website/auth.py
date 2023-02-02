@@ -24,7 +24,7 @@ def login():
                 flash('Incorrect password, please try again',category='error')
         else:
             flash('Email does not exist.',category='error')
-    return render_template("login.html",user=current_user)
+    return render_template("/html/login.html",user=current_user)
 
 @auth.route('/logout')
 @login_required
@@ -59,4 +59,4 @@ def sign_up():
             flash('Account created!', category='success')
             return redirect(url_for('views.home')) # blueprint -> route
 
-    return render_template("sign_up.html",user=current_user)
+    return render_template("/html/sign_up.html",user=current_user)

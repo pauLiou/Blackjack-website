@@ -6,6 +6,7 @@ from engine import deck_and_players,deposits,game_logic
 from . import db
 import json
 import os
+from sqlalchemy import update
 
 #define that this script is a blueprint - separate the app out so we don't have to have views all defined in one file
 views = Blueprint('views', __name__)
@@ -16,20 +17,20 @@ views = Blueprint('views', __name__)
 def home():
     if request.method == "POST":
         
-        bet = request.form.get('bet')
+        
 
         if request.form.get('action_play') == 'BET':
-            
+
+            db.session.add(GameState(current_bet = request.form.get('bet'),user_id = current_user.id))
+            db.session.commit()
           
-            return redirect(url_for('views.game',bet=bet))
+            return redirect(url_for('views.game'))
 
     return render_template('/html/home.html', user=current_user)
 
 @views.route('/game', methods=['GET','POST']) # decorator - the url endpoint route for this page
 @login_required
 def game():
-    bet = request.args['bet']
-    print(bet)
     player_value = None
     house_value = None
     deal = deck_and_players.Deck_of_cards()
@@ -42,27 +43,24 @@ def game():
             player_cards = mutate_url(player.cards)
             house_cards = mutate_url(house.cards)
 
-            player_value = GameState(current_value = player.value,current_stage = 1)
-            db.session.add(player_value)
-            db.session.commit()
-
-            house_value = GameState(current_value = house.value,current_stage = 1)
-            db.session.add(house_value)
-            db.session.commit()
-
+            db.session.add(GameState(current_value = player.value,
+                                    current_house_value = house.value,
+                                    current_stage = 1,
+                                    user_id = current_user.id))
             for card in player_cards: 
                 db.session.add(card)
-                db.session.commit()
+
 
             for house_card in house_cards:
                 db.session.add(house_card)
-                db.session.commit()
+
+            db.session.commit()
 
         elif request.form.get('action_stick') == 'STICK':
             pass
         elif request.form.get('action_double') == 'DOUBLE':
             pass
-    return render_template('/html/game.html',user=current_user,player_value=player_value,house_value=house_value)
+    return render_template('/html/game.html',user=current_user)
 
 @views.route('/profile', methods=["GET","POST"])
 @login_required
